@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from .routers import todo_lists
+from .routers import todo_lists, todo_item
 from .models import __beanie_models__
 from .database import init_db
 
@@ -21,6 +21,7 @@ app.add_middleware(
 )
 
 app.include_router(todo_lists.router)
+app.include_router(todo_item.router)
 
 
 @app.on_event("startup")

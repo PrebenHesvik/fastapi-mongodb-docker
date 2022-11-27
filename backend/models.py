@@ -26,7 +26,7 @@ class TodoList(Document):
     name: str
     description: str | None = None
     createdDate: datetime
-    updatedDate: date | None = None
+    updatedDate: datetime | None = None
 
 
 class CreateUpdateTodoList(BaseModel):
@@ -35,12 +35,13 @@ class CreateUpdateTodoList(BaseModel):
 
 
 class TodoItem(Document):
-    listID: PydanticObjectId
+    list_id: PydanticObjectId
     name: str
     description: str | None = Field(max_length=400)
     state: TodoState
     level_of_importance: LevelOfImportance
-    date_created: date
+    date_created: datetime
+    date_updated: datetime | None = None
 
 
 class CreateUpdateTodoItem(BaseModel):

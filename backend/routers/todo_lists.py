@@ -9,7 +9,7 @@ from ..models import (
 )
 
 
-router = APIRouter(prefix="/todo-list", tags=["todo-list"])
+router = APIRouter(prefix="/lists", tags=["todo-list"])
 
 
 @router.get("/", response_model=list[TodoList])
@@ -20,10 +20,9 @@ async def get_lists():
 
 @router.post("/", status_code=status.HTTP_201_CREATED, response_model=TodoList)
 async def create_list(body: CreateUpdateTodoList):
-    todo_list = await TodoList(
+    return await TodoList(
         **body.dict(), createdDate=dt.datetime.now(dt.timezone.utc)
     ).save()
-    return todo_list
 
 
 @router.get("/{list_id}", response_model=TodoList)
@@ -42,6 +41,7 @@ async def update_todo(
     if not todo_list:
         raise HTTPException(status_code=404, detail="Todo list not found")
     await todo_list.update({"$set": body.dict(exclude_unset=True)})
+    # todo_list.updatedDate = dt.datetime.now(dt.timezone.utc)
     todo_list.updatedDate = dt.datetime.now(dt.timezone.utc)
     return await todo_list.save()
 
